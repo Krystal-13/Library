@@ -2,7 +2,7 @@ package com.rmtest.library.user.dto;
 
 import lombok.Getter;
 
-public class AuthRequestDto {
+public class AuthRequest {
 
     @Getter
     public static class SignUp {

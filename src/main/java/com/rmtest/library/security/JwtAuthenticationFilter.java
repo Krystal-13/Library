@@ -1,7 +1,6 @@
 package com.rmtest.library.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rmtest.library.exception.CustomException;
 import com.rmtest.library.exception.ErrorCode;
 import com.rmtest.library.exception.ErrorResponse;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -12,7 +11,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,7 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 
@@ -86,7 +83,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write(objectMapper
-                .writeValueAsString(new CustomException(errorCode)));
+                .writeValueAsString(ErrorResponse.builder()
+                                                .errorCode(errorCode)
+                                                .errorMessage(errorCode.getDescription())
+                                                .build()));
 
     }
 

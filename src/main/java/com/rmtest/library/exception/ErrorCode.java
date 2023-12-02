@@ -1,6 +1,5 @@
 package com.rmtest.library.exception;
 
-import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
@@ -16,7 +15,13 @@ public enum ErrorCode {
 
     /* Auth */
     INVALID_REQUEST("잘못된 요청입니다.", BAD_REQUEST),
-    EXPIRED_TOKEN("인증 토큰이 만료되었습니다.", UNAUTHORIZED);
+    EXPIRED_TOKEN("인증 토큰이 만료되었습니다.", UNAUTHORIZED),
+
+    /* Book */
+    ACCESS_DENIED("접근권한이 없습니다.", FORBIDDEN),
+    ALREADY_EXIST_BOOK("이미 등록된 도서입니다.", BAD_REQUEST),
+    BOOK_NOT_FOUND("도서가 없습니다.", NOT_FOUND);
+
 
     private final String description;
     private final HttpStatus status;

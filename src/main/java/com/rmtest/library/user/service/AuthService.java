@@ -3,7 +3,7 @@ package com.rmtest.library.user.service;
 import com.rmtest.library.exception.CustomException;
 import com.rmtest.library.security.TokenProvider;
 import com.rmtest.library.user.repository.UserRepository;
-import com.rmtest.library.user.dto.AuthRequestDto;
+import com.rmtest.library.user.dto.AuthRequest;
 import com.rmtest.library.user.entity.User;
 import com.rmtest.library.user.entity.UserRole;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -25,7 +25,7 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    public boolean signUp(AuthRequestDto.SignUp request) {
+    public boolean signUp(AuthRequest.SignUp request) {
 
         boolean requestUser = userRepository.existsByEmail(request.getEmail());
 
@@ -47,7 +47,7 @@ public class AuthService {
         return true;
     }
 
-    public String signIn(AuthRequestDto.SignIn request) {
+    public String signIn(AuthRequest.SignIn request) {
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
