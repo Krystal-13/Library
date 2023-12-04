@@ -1,6 +1,5 @@
 package com.rmtest.library.book.entity;
 
-import com.rmtest.library.book.dto.ModifyBookRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,37 +15,22 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(columnDefinition = "varchar(100)")
-    private String bookName;
-
-    @Column(columnDefinition = "varchar(50)")
-    private String authorName;
-
-    @Column(columnDefinition = "varchar(50)")
-    private String publisher;
-
     @Column(columnDefinition = "varchar(20)")
     private String isbn;
 
-    @Column(columnDefinition = "varchar(10)")
-    @Enumerated(EnumType.STRING)
-    private BookStatus status;
+    private int count;
 
     @Builder
-    public Book(String bookName, String authorName, String publisher, String isbn, BookStatus status) {
-        this.bookName = bookName;
-        this.authorName = authorName;
-        this.publisher = publisher;
+    public Book(String isbn, int count) {
         this.isbn = isbn;
-        this.status = status;
+        this.count = count;
     }
 
-    public void updateBook(ModifyBookRequest book) {
+    public void plusCount(int count) {
+        this.count += count;
+    }
 
-        this.id = book.getId();
-        this.bookName = book.getBookName();
-        this.authorName = book.getAuthorName();
-        this.publisher = book.getPublisher();
-        this.isbn = book.getIsbn();
+    public void setCount(int count) {
+        this.count = count;
     }
 }

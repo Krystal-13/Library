@@ -1,7 +1,6 @@
 package com.rmtest.library.book.dto;
 
-import com.rmtest.library.book.entity.BookStatus;
-import com.rmtest.library.book.entity.Book;
+import com.rmtest.library.book.entity.BookInfo;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,32 +10,32 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookResponse {
 
-    private Integer id;
+    private Integer bookInfoId;
     private String bookName;
     private String authorName;
     private String publisher;
     private String isbn;
-    private BookStatus status;
+    private int count;
 
     @Builder
-    public BookResponse(Integer id, String bookName, String authorName, String publisher, String isbn, BookStatus status) {
-        this.id = id;
+    public BookResponse(Integer bookInfoId, String bookName, String authorName, String publisher, String isbn, int count) {
+        this.bookInfoId = bookInfoId;
         this.bookName = bookName;
         this.authorName = authorName;
         this.publisher = publisher;
         this.isbn = isbn;
-        this.status = status;
+        this.count = count;
     }
 
-    public static BookResponse ofEntity(Book book) {
+    public static BookResponse ofEntity(BookInfo bookInfo) {
 
         return BookResponse.builder()
-                .id(book.getId())
-                .bookName(book.getBookName())
-                .authorName(book.getAuthorName())
-                .publisher(book.getPublisher())
-                .isbn(book.getIsbn())
-                .status(book.getStatus())
+                .bookInfoId(bookInfo.getId())
+                .bookName(bookInfo.getBookName())
+                .authorName(bookInfo.getAuthorName())
+                .publisher(bookInfo.getPublisher())
+                .isbn(bookInfo.getBook().getIsbn())
+                .count(bookInfo.getBook().getCount())
                 .build();
     }
 }
