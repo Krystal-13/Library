@@ -1,10 +1,11 @@
 package com.rmtest.library.book.service;
 
-import com.rmtest.library.book.entity.BookStatus;
-import com.rmtest.library.book.dto.ModifyBookRequest;
 import com.rmtest.library.book.dto.BookRequest;
 import com.rmtest.library.book.dto.BookResponse;
+import com.rmtest.library.book.dto.ModifyBookRequest;
 import com.rmtest.library.book.entity.Book;
+import com.rmtest.library.book.entity.BookInfo;
+import com.rmtest.library.book.repository.BookInfoRepository;
 import com.rmtest.library.book.repository.BookRepository;
 import com.rmtest.library.exception.CustomException;
 import com.rmtest.library.exception.ErrorCode;
@@ -14,14 +15,18 @@ import com.rmtest.library.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class BookService {
 
     private final UserRepository userRepository;
+    private final BookInfoRepository bookInfoRepository;
     private final BookRepository bookRepository;
 
-    public BookService(UserRepository userRepository, BookRepository bookRepository) {
+    public BookService(UserRepository userRepository, BookInfoRepository bookInfoRepository, BookRepository bookRepository) {
         this.userRepository = userRepository;
+        this.bookInfoRepository = bookInfoRepository;
         this.bookRepository = bookRepository;
     }
 
@@ -31,29 +36,42 @@ public class BookService {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
         }
 
-        if (bookRepository.findByIsbn(request.getIsbn()).isPresent()) {
-            throw new CustomException(ErrorCode.ALREADY_EXIST_BOOK);
+        Optional<Book> optionalBook = bookRepository.findByIsbn(request.getIsbn());
+
+        if (optionalBook.isPresent()) {
+            BookInfo bookInfo = this.plusBookCount(optionalBook.get(), request.getCount());
+
+            return BookResponse.ofEntity(bookInfoRepository.save(bookInfo));
         }
 
-        Book book = Book.builder()
-                        .bookName(request.getBookName())
-                        .authorName(request.getAuthorName())
-                        .publisher(request.getPublisher())
-                        .isbn(request.getIsbn())
-                        .status(BookStatus.POSSIBLE)
-                        .build();
+        Book savedBook = this.saveBook(request);
 
-        return BookResponse.ofEntity(bookRepository.save(book));
+        BookInfo bookInfo = BookInfo.builder()
+                                    .book(savedBook)
+                                    .bookName(request.getBookName())
+                                    .authorName(request.getAuthorName())
+                                    .publisher(request.getPublisher())
+                                    .build();
+
+        return BookResponse.ofEntity(bookInfoRepository.save(bookInfo));
+    }
+
+    private BookInfo plusBookCount(Book book, int count) {
+
+        book.plusCount(count);
+
+        return bookInfoRepository.findByBook(book).orElseThrow(() ->
+                new CustomException(ErrorCode.BOOK_INFO_NOT_FOUND));
     }
 
     public BookResponse getBookInfo(Integer id, String email) {
 
         this.getUser(email);
 
-        Book book = bookRepository.findById(id).orElseThrow(() ->
-                                        new CustomException(ErrorCode.BOOK_NOT_FOUND));
+        BookInfo bookInfo = bookInfoRepository.findById(id).orElseThrow(() ->
+                                        new CustomException(ErrorCode.BOOK_INFO_NOT_FOUND));
 
-        return BookResponse.ofEntity(book);
+        return BookResponse.ofEntity(bookInfo);
     }
 
     @Transactional
@@ -63,18 +81,31 @@ public class BookService {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
         }
 
-        Book book = bookRepository.findById(request.getId()).orElseThrow(() ->
-                                        new CustomException(ErrorCode.BOOK_NOT_FOUND));
+        BookInfo bookInfo = bookInfoRepository.findById(request.getBookInfoId()).orElseThrow(() ->
+                                        new CustomException(ErrorCode.BOOK_INFO_NOT_FOUND));
 
-        book.updateBook(request);
+        bookInfo.updateBookInfo(request);
 
-        return BookResponse.ofEntity(book);
+        Book book = bookInfo.getBook();
+        book.setCount(request.getCount());
+
+        return BookResponse.ofEntity(bookInfo);
     }
 
     private User getUser(String email) {
 
         return userRepository.findByEmail(email).orElseThrow(() ->
                                         new CustomException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private Book saveBook(BookRequest request) {
+
+        Book book = Book.builder()
+                .isbn(request.getIsbn())
+                .count(request.getCount())
+                .build();
+
+        return bookRepository.save(book);
     }
 
 }

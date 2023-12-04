@@ -13,5 +13,6 @@ public class BookRequest {
     private String authorName;
     private String publisher;
     private String isbn;
+    private int count;
 
 }

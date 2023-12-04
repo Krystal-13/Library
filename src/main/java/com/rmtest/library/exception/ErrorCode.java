@@ -20,7 +20,7 @@ public enum ErrorCode {
     /* Book */
     ACCESS_DENIED("접근권한이 없습니다.", FORBIDDEN),
     ALREADY_EXIST_BOOK("이미 등록된 도서입니다.", BAD_REQUEST),
-    BOOK_NOT_FOUND("도서가 없습니다.", NOT_FOUND);
+    BOOK_INFO_NOT_FOUND("도서가 없습니다.", NOT_FOUND);
 
 
     private final String description;
