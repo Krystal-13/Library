@@ -20,7 +20,13 @@ public enum ErrorCode {
     /* Book */
     ACCESS_DENIED("접근권한이 없습니다.", FORBIDDEN),
     ALREADY_EXIST_BOOK("이미 등록된 도서입니다.", BAD_REQUEST),
-    BOOK_INFO_NOT_FOUND("도서가 없습니다.", NOT_FOUND);
+    BOOK_INFO_NOT_FOUND("도서가 없습니다.", NOT_FOUND),
+
+    /* Rent */
+    UNMATCHED_USER("본인의 계정으로만 사용가능합니다.", BAD_REQUEST),
+    OUT_OF_STOCK("대여가능한 도서 재고가 없습니다.", BAD_REQUEST),
+    RENT_NOT_FOUND("대여정보가 없습니다.", NOT_FOUND),
+    OVERDUE_BOOK("반납기한이 지난 도서입니다.", BAD_REQUEST);
 
 
     private final String description;

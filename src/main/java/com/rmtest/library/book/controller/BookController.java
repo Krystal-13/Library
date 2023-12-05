@@ -21,20 +21,23 @@ public class BookController {
 
     @PostMapping()
     @PreAuthorize("hasAuthority('MANAGER')")
-    public ResponseEntity<BookResponse> registerBook(@RequestBody BookRequest request, Principal principal) {
+    public ResponseEntity<BookResponse> registerBook(@RequestBody BookRequest request,
+                                                     Principal principal) {
 
         return ResponseEntity.ok(bookService.registerBook(request, principal.getName()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookResponse> getBookInfo(@PathVariable Integer id, Principal principal) {
+    public ResponseEntity<BookResponse> getBookInfo(@PathVariable Integer id,
+                                                    Principal principal) {
 
         return ResponseEntity.ok(bookService.getBookInfo(id, principal.getName()));
     }
 
     @PatchMapping()
     @PreAuthorize("hasAuthority('MANAGER')")
-    public ResponseEntity<BookResponse> modifyBook(@RequestBody ModifyBookRequest request, Principal principal) {
+    public ResponseEntity<BookResponse> modifyBook(@RequestBody ModifyBookRequest request,
+                                                   Principal principal) {
 
         return ResponseEntity.ok(bookService.modifyBook(request, principal.getName()));
     }
