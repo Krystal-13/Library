@@ -1,5 +1,7 @@
 package com.rmtest.library.book.entity;
 
+import com.rmtest.library.exception.CustomException;
+import com.rmtest.library.exception.ErrorCode;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -28,6 +30,14 @@ public class Book {
 
     public void plusCount(int count) {
         this.count += count;
+    }
+
+    public void minusCount() {
+        this.count -= 1;
+
+        if (this.count < 0) {
+            throw new CustomException(ErrorCode.OUT_OF_STOCK);
+        }
     }
 
     public void setCount(int count) {

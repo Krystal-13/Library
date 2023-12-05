@@ -21,7 +21,7 @@ public class User {
     @Column(columnDefinition = "varchar(50)")
     private String email;
 
-    @Column(columnDefinition = "varchar(50)")
+    @Column(columnDefinition = "varchar(100)")
     private String password;
 
     @Enumerated(EnumType.STRING)

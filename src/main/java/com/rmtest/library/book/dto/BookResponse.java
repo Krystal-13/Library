@@ -1,13 +1,10 @@
 package com.rmtest.library.book.dto;
 
 import com.rmtest.library.book.entity.BookInfo;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookResponse {
 
     private Integer bookInfoId;
@@ -18,7 +15,8 @@ public class BookResponse {
     private int count;
 
     @Builder
-    public BookResponse(Integer bookInfoId, String bookName, String authorName, String publisher, String isbn, int count) {
+    public BookResponse(Integer bookInfoId, String bookName, String authorName,
+                        String publisher, String isbn, int count) {
         this.bookInfoId = bookInfoId;
         this.bookName = bookName;
         this.authorName = authorName;
@@ -38,4 +36,6 @@ public class BookResponse {
                 .count(bookInfo.getBook().getCount())
                 .build();
     }
+
+
 }
