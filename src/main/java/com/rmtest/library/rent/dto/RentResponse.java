@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.rmtest.library.book.entity.QBook.book;
-import static com.rmtest.library.rent.QRent.rent;
+import static com.rmtest.library.rent.entity.QRent.rent;
 import static com.rmtest.library.user.entity.QUser.user;
 
 @Getter

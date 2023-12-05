@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.rmtest.library.book.entity.QBook.book;
-import static com.rmtest.library.rent.QRent.rent;
+import static com.rmtest.library.rent.entity.QRent.rent;
 import static com.rmtest.library.user.entity.QUser.user;
 
 @Repository
