@@ -25,7 +25,6 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar(10)")
     private UserRole role;
 
     @Builder
